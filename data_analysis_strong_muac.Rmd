@@ -1,0 +1,773 @@
+---
+title: "strong-muac-analysis"
+author: "Eric Anku"
+date: "6/8/2021"
+output: html_document
+---
+
+
+
+* * *
+
+
+## Part 1: Data
+
+
+The data was collected as a purposive sample of children admitted within 24 hours of admission at both Korle Bu and Princess Marie Louis Hospital.
+
+
+```{r data-overview, eval=FALSE}
+# Overview of data
+sessionInfo ()
+glimpse (nrs)
+missing_glimpse(nrs)
+ff_glimpse(nrs)
+skim (nrs)
+```
+
+
+
+* * *
+
+
+## Part 2: Research question
+
+Is STRONGkids and MUAC useful in predicting acute malnutrition in under 5 paediatric patients in hospital compared to weight for height z score of <-2 SD?
+
+
+
+* * *
+
+
+
+## Part 3: Exploratory data analysis
+
+
+
+```{r corplot,message=FALSE,cache=TRUE}
+## Correlation between numerical variables
+##a <- nrs%>%select (age,los,weight,stature,muac,strong_score,wfh_cdc,wfh_who,muacz_who)
+##ggpairs(a)
+```
+
+
+***
+
+
+
+## Visualisations
+
+
+```{r distributions-of-variables, eval=FALSE}
+# Distributions
+
+## Histograms for numerical values and barplots for categorical variables
+
+###Age
+ggplot (nrs, aes (age)) +
+  geom_freqpoly() 
+
+###Sex
+ggplot (nrs, aes (sex)) +
+  geom_bar() 
+
+###Disease category
+ggplot (nrs, aes (diagnosis_cat)) +
+  geom_bar(aes(fill=diagnosis_cat)) +
+  coord_polar() +
+  guides (fill="none")
+
+### Length of stay
+ggplot (nrs, aes (los)) +
+  geom_freqpoly() 
+```
+
+
+
+```{r age-visualisations, eval=FALSE}
+#What is the relationship between age and the other variables
+
+## Age and sex
+ggplot(nrs, aes(sex, age, fill = sex))+
+  geom_boxplot() + 
+  labs (title = "Relationship betwenn age and sex", x= "Sex of child", y= "Age of children")
+
+## Age and diagnosis category
+
+ggplot(nrs, aes(diagnosis_cat, age))+
+  geom_boxplot() + 
+  labs (title = "Relationship betwenn age and diagnosis category", x= "Disease category", y= "Age of children")
+
+## Age and length of stay stratified by sex
+
+ggplot(nrs, aes(age, los, colour = sex))+
+  geom_jitter() + 
+  labs (title = "Relationship betwenn age and lenght of stay", x= "Age of child", y= "Length of stay")
+
+## Age and weight stratified by sex
+
+
+ggplot(nrs, aes(age, weight, colour = sex))+
+  geom_point() + 
+  labs (title = "Relationship betwenn age and weight", x= "Age of child", y= "Weight")
+
+## Age and stature
+
+ggplot(nrs, aes(age, stature, colour = sex))+
+  geom_point() + 
+  labs (title = "Relationship betwenn age and stature", x= "Age of child", y= "Stature")
+
+## Age and muac
+
+ggplot(nrs, aes(age, muac, colour = sex))+
+  geom_point() + 
+  labs (title = "Relationship betwenn age and muac", x= "Age of child", y= "Mid upper arm circumference")
+
+## Age and two by two muac values
+
+ggplot(nrs, aes(muac_two_cat, age))+
+  geom_boxplot(outlier.color = "red") + 
+  labs (title = "Relationship betwenn age and two by two muac values", x= "MUAC categories", y= "Age of child")
+
+## Age and Strongkids category
+
+ggplot(nrs, aes(strong_two_cat, age))+
+  geom_boxplot(outlier.color = "red") + 
+  labs (title = "Relationship betwenn age and two by two STRONG values", x= "Strong categories", y= "Age of child")
+
+## Age and Weight for height CDC
+
+ggplot(nrs, aes(age, wfh_cdc, colour = sex))+
+  geom_point() + 
+  labs (title = "Relationship betwenn age and Weight for height (CDC)", x= "Age of child", y= "Weight for height")
+
+## Age and Weight for height WHO
+
+ggplot(nrs, aes(age, wfh_who, colour = sex))+
+  geom_point() + 
+  labs (title = "Relationship betwenn age and weight for height (WHO)", x= "Age of child", y= "Weight for height")
+
+## Age and MUAC z score
+
+ggplot(nrs, aes(age, muacz_who, colour = sex))+
+  geom_point() + 
+  labs (title = "Relationship betwenn age and muac z scores", x= "Age of child", y= "Mid upper arm circumference z scores")
+
+## Age and CDC wfh categories
+
+ggplot(nrs, aes(wfh_cdc_cat, age))+
+  geom_boxplot(outlier.color = "red") + 
+  labs (title = "Relationship betwenn age and CDC malnourished categories", x= "Acute malnutrition by CDC", y= "Age of child")
+
+## Age and WHO wfh categories
+
+ggplot(nrs, aes(wfh_who_cat, age))+
+  geom_boxplot(outlier.color = "red") + 
+  labs (title = "Relationship betwenn age and two by WHO malnourished categories", x= "Acute malnutrition by WHO", y= "Age of child")
+
+## Age and MUAC z score categories
+
+ggplot(nrs, aes(muac_z_cat, age))+
+  geom_boxplot(outlier.color = "red") + 
+  labs (title = "Relationship betwenn age and MUAC z score categories", x= "Acute malnutrition by MUAC", y= "Age of child")
+
+
+
+```
+
+
+
+
+```{r summary-table, eval=FALSE}
+#Summary statistics of age,weight,height,los,muac
+
+rndr <- function(x, name, ...) {
+    if (!is.numeric(x)) return(render.categorical.default(x))
+    what <- switch(name,
+        age = "Median (IQR)",
+        los  = "Median (IQR)",
+        num_children = "Mean (SD)",
+        bwt = "Mean (SD)",
+        muac = "Mean (SD)",
+        weight = "Mean (SD)",
+        stature = "Mean (SD)",
+        wfh_cdc = "Mean (SD)",
+        wfh_who = "Mean (SD)",
+        muac_z_who = "Mean (SD)"
+        )
+    
+    
+    parse.abbrev.render.code(c("", what))(x)
+}
+
+label(nrs$age) <- "Age of children"
+label(nrs$sex) <- "Sex"
+label (nrs$age_group) <- "Age group"
+label (nrs$los) <- "Length of stay"
+label (nrs$muac) <- "Mid-upper arm circumference"
+label (nrs$weight) <- "Weight of children"
+label (nrs$stature) <- "Height of children"
+label (nrs$wfh_cdc) <- "Weight for height (WFH) z-scores"
+label (nrs$wfh_who) <- "Height for age (HAZ) z-scores"
+label (nrs$wfh_who_cat) <- "Acute malnutrition WHO (WFH < - 2 SD)"
+label (nrs$wfh_cdc_cat) <- "Acute malnutrition CDC (HAZ < - 2 SD)"
+
+units (nrs$age) <- "months"
+units (nrs$los) <- "days"
+units (nrs$weight) <- "kg"
+units (nrs$muac) <- "cm"
+units (nrs$stature) <- "cm"
+
+table1(~age + sex+ diagnosis_cat + los + weight + stature + muac + + weight + stature + wfh_who + wfh_cdc + wfh_cdc_cat + wfh_who_cat,data = nrs,render=rndr)
+```
+
+
+
+
+
+
+
+
+
+```{r eval=FALSE}
+nrs%>%filter(muac_z_cat=="Acute malnutrition")%>%
+  group_by(age_group)%>%
+  count()
+```
+
+
+
+
+Descriptive information appendix
+
+
+
+```{r eval=FALSE}
+nrs %>% group_by(sex)%>%
+  summarise(median_age = median (age),
+            IQR_age = IQR (age),
+            median_los = median (los),
+            IQR_los = IQR (los),
+            median_wt = median (weight),
+            IQR_wt = IQR (weight),
+            mean_ht = mean (stature),
+            sd_ht = sd (stature),
+            mean_muac = mean (muac),
+            sd_muac = sd (muac))
+
+nrs %>% group_by(sex,wfh_cdc_cat,
+                )%>%
+  summarise (n = n())
+
+
+nrs %>% group_by(sex,wfh_who_cat,
+                )%>%
+  summarise (n = n())
+ 
+
+nrs %>% group_by(sex,muac_z_cat,
+                )%>%
+  summarise (n = n())
+ 
+ nrs %>% group_by(sex,muac_cat_r,
+                )%>%
+  summarise (n = n())
+ 
+ 
+  nrs %>% group_by(sex,strong_score_cat,
+                )%>%
+  summarise (n = n())                
+
+```
+
+
+* * *
+
+
+```{r}
+ggplot (nrs, aes (strong_score_cat, fill = sex)) +
+  geom_bar (position = "dodge") + labs (title = "STRONGkids risk category by sex", x = "Risk category", y = "Frequency") + scale_fill_discrete(name= "Sex")
+
+
+# plot strongkids
+ggbarstats(
+  data = nrs,
+  x = sex,
+  y = strong_score_cat,
+  type = "parametric",
+  title = "STRONGkids category stratified by sex",
+  xlab = "STRONGkids categories",
+  legend.title = "Sex",
+  package = "basetheme",
+  palette = "ink"
+)
+
+
+# plot muac
+
+ggbarstats(
+  data = nrs,
+  x = sex,
+  y = muac_cat_r,
+  type = "parametric",
+  title = "MUAC category stratified by sex",
+  xlab = "MUAC categories",
+  legend.title = "Sex",
+  package = "beyonce",
+  palette = "X1"
+)
+
+
+
+
+# Plot MUAC categories
+ggbarstats(
+  data = nrs,
+  x = sex,
+  y= muac_z_cat,
+  type = "parametric",
+  title = "MUAC z-score category stratified by sex",
+  xlab = "MUAC categories",
+  legend.title = "Sex",
+  package = "awtools",
+  palette = "spalette"
+)
+
+
+# Plot WHO
+ggbarstats(
+  data = nrs,
+  x = sex,
+  y= wfh_who_cat,
+  type = "parametric",
+  title = "Acute malnutrition (WHO) stratified by sex",
+  xlab = "Acute malnutrition",
+  legend.title = "Sex",
+   package = "awtools",
+  palette = "mpalette"
+)
+
+
+# Plot CDC
+
+ggbarstats(
+  data = nrs,
+  x = sex,
+  y= wfh_cdc_cat,
+  type = "parametric",
+  title = "Acute malnutrition (CDC) stratified by sex",
+  xlab = "Acute malnutrition",
+  legend.title = "Sex",
+   package = "ggsci",
+  palette = "uniform_startrek"
+)
+
+
+
+```
+
+
+
+MUAC z score vrs WHO z score
+```{r}
+## MUAC z-score vrs WHO z-score
+
+ggscatterstats(
+  data = nrs,
+  x = muacz_who,
+  y= wfh_who,
+  type = "parametric",
+  title = "Acute CDC stratified by sex",
+  xlab = "MUAC z-scores",
+  ylab = "WHO z-scores"
+)
+
+
+
+## MUAC z score vrs CDC WFH z score
+
+ggscatterstats(
+  data = nrs,
+  x = muacz_who,
+  y= wfh_cdc,
+  type = "parametric",
+  title = "Acute WHO stratified by sex",
+  xlab = "MUAC z-scores",
+  ylab = "CDC z-scores"
+)
+```
+
+
+* * *
+
+## Part 6: Conclusion
+
+STRONG CDC
+
+
+```{r crosstab-STRONGCDC}
+## Two by two table for validity calculations
+
+table (nrs$strong_two_cat,nrs$wfh_cdc_cat) ##STRONGKIDS CDC
+```
+
+
+
+STRONG WHO
+
+
+```{r strongWHO}
+table (nrs$strong_two_cat,nrs$wfh_who_cat) #STRONGKIDS WHO
+```
+
+
+MUAC CDC
+
+```{r muacCDC}
+table (nrs$muac_two_cat, nrs$wfh_cdc_cat)  # MUAC CDC
+```
+
+
+MUAC WHO
+
+
+```{r}
+table (nrs$muac_two_cat,nrs$wfh_who_cat) # MUAC WHO
+```
+
+
+
+***
+
+
+*Calculating confidence intervals for diagnostic values*
+
+
+
+STRONG SENSITIVITY CDC
+
+
+```{r cdc-strong}
+library (DescTools)
+
+## CDC-STRONGkids
+
+## Sensitivity
+BinomCI(23, 34, conf.level = 0.95, method =  "wald")
+```
+
+
+
+STRONG SPECIFICITY CDC
+
+```{r}
+## Specificity
+BinomCI(27, 62, conf.level = 0.95, method =  "wald")
+```
+
+
+
+STRONG PPV CDC
+
+```{r}
+## Positive predictive value
+
+BinomCI(23, 58, conf.level = 0.95, method =  "wald")
+```
+
+
+STRONG NPV CDC
+
+```{r}
+## Negative predictive value
+
+BinomCI(27, 38, conf.level = 0.95, method =  "wald")
+```
+
+
+
+
+
+
+STRONG SN WHO
+
+```{r}
+## WHO-STRONGkids
+
+## Sensitivity
+BinomCI(20, 29, conf.level = 0.95, method =  "wald")
+```
+
+
+
+STRONG SP WHO
+
+
+```{r}
+## Specificity
+BinomCI(29, 67, conf.level = 0.95, method =  "wald")
+```
+
+
+
+STRONG PPV WHO
+
+
+
+```{r}
+
+## Positive predictive value
+
+BinomCI(20, 58, conf.level = 0.95, method =   "wald")
+```
+
+
+STRONG NPV WHO
+
+
+```{r}
+## Negative predictive value
+
+BinomCI(29, 38, conf.level = 0.95, method =   "wald")
+```
+
+
+
+
+
+
+MUAC SN CDC
+
+
+
+```{r}
+## CDC-MUAC
+
+## Sensitivity
+BinomCI(13, 34, conf.level = 0.95, method =   "wald")
+```
+
+
+
+MUAC SP CDC
+
+
+```{r}
+
+## Specificity
+BinomCI(57, 62, conf.level = 0.95, method =   "wald")
+```
+
+
+
+
+MUAC PPV CDC
+
+
+```{r}
+## Positive predictive value
+
+BinomCI(13, 18, conf.level = 0.95, method =   "wald")
+```
+
+
+
+MUAC NPV CDC
+
+
+
+
+```{r cdc-muac}
+## Negative predictive value
+
+BinomCI(57, 78, conf.level = 0.95, method =  "wald")
+```
+
+
+
+
+
+MUAC SN WHO
+
+
+```{r}
+## WHO-MUAC
+
+## Sensitivity
+BinomCI(13, 29, conf.level = 0.95, method =  "wald")
+```
+
+
+
+
+MUAC SP WHO
+
+
+```{r}
+## Specificity
+BinomCI(62, 67, conf.level = 0.95, method =  "wald")
+```
+
+
+
+MUAC PPV WHO
+
+
+```{r}
+## Positive predictive value
+
+BinomCI(13, 18, conf.level = 0.95, method =   "wald")
+```
+
+
+
+
+MUAC NPV WHO
+
+
+```{r who-muac}
+
+## Negative predictive value
+
+BinomCI(62, 78, conf.level = 0.95, method =   "wald")
+```
+
+
+
+***
+
+
+*Inter-rater agreement using Cohen's Kappa*
+
+
+```{r cohen-kappa}
+library (irr)
+
+k <- read.csv ("inter_rater_dataset.csv")
+
+agree(k[,13:14], tolerance = 0)
+
+kappa2(k[,13:14])
+```
+
+
+
+***
+
+
+*INFERENTIAL STATISTICS*
+
+
+
+```{r inference, cache=TRUE}
+### Inference
+
+## Median weight
+
+inference (y = weight, x = sex, data = nrs, type ="ht",
+           statistic = "median",
+           method = "simulation", 
+           alternative = "twosided"
+           )
+
+## Median age
+
+inference (y = age, x = sex, data = nrs, type ="ht",
+           statistic = "median",
+           method = "simulation", 
+           alternative = "twosided"
+)
+
+## Mean height
+
+inference (y = stature, x = sex, data = nrs, type ="ht",
+           statistic = "mean",
+           method = "theoretical", 
+           alternative = "twosided"
+)
+
+
+## Median length of stay
+
+inference (y = los, x = sex, data = nrs, type ="ht",
+           statistic = "median",
+           method = "simulation", 
+           alternative = "twosided"
+)
+
+## Mean muac
+
+inference (y = muac, x = sex, data = nrs, type ="ht",
+           statistic = "mean",
+           method = "theoretical", 
+           alternative = "twosided"
+)
+
+
+chisq.test(nrs$sex, nrs$strong_score_cat)
+
+table (nrs$sex, nrs$strong_score_cat)
+
+
+## muac_z score
+
+inference (y = muac_z_cat, x = sex, data = nrs, type ="ht",
+           statistic = "proportion",
+           method = "theoretical", 
+           alternative = "twosided",
+           success = "Acute malnutrition"
+)
+
+## WHO WFH
+
+
+inference (y = wfh_who_cat, x = sex, data = nrs, type ="ht",
+           statistic = "proportion",
+           method = "theoretical", 
+           alternative = "twosided",
+           success = "Acute malnutrition"
+)
+
+
+## CDC WFH
+
+inference (y = wfh_cdc_cat, x = sex, data = nrs, type ="ht",
+           statistic = "proportion",
+           method = "theoretical", 
+           alternative = "twosided",
+           success = "Acute malnutrition"
+)
+
+
+chisq.test(nrs$sex, nrs$muac_z_cat)
+
+fisher.test(nrs$sex, nrs$muac_z_cat)
+
+fisher.test(nrs$sex, nrs$muac_cat_r)
+
+chisq.test(nrs$sex, nrs$muac_cat_r)
+
+fisher.test(nrs$sex, nrs$muac_two_cat)
+
+fisher.test(nrs$sex, nrs$strong_score_cat)
+
+chisq.test(nrs$sex, nrs$strong_score_cat)
+
+
+inference (y = wfh_who_cat, data = nrs, type ="ci",
+           statistic = "proportion",
+           method = "theoretical", 
+           alternative = "twosided",
+           success = "Acute malnutrition"
+)
+
+inference (y = wfh_cdc_cat, data = nrs, type ="ci",
+           statistic = "proportion",
+           method = "theoretical", 
+           alternative = "twosided",
+           success = "Acute malnutrition"
+)
+
+```
+
+
