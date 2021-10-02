@@ -13,8 +13,10 @@ pacman::p_load (
         finalfit, # Creating models
         ggthemes, # Plot themes
         ggstatsplot, # Inferential plots
-        knitr # Chunk options
+        knitr, # Chunk options
+        DescTools, # Confidence intervals
+        irr, # Inter-rater agreement
+        statsr #Inferential statistics
         
         
 )
-
