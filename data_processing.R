@@ -2,8 +2,8 @@
 
 # Recode sex into male and female
 
-nrs <- strong_muac_raw %>%
-        mutate(sex.factor =            
+nrs <- nrs %>%
+        mutate(sex =            
                        factor(sex) %>%               
                               
                        fct_recode(           
@@ -12,14 +12,17 @@ nrs <- strong_muac_raw %>%
                        ff_label("Sex"),   
                
              
-               nationality.category = factor (nationality) %>%
+               nationality = 
+                       factor (nationality) %>%
+                       
                        fct_recode("Ghanaian" = "1",
                                   "Others"  = "2") %>%
                        
                        ff_label("Nationality"),
 
                
-               tribe.category = factor (tribe) %>%
+               tribe = factor (tribe) %>%
+                       
                        fct_recode("Akan" = "1",
                                   "Ewe" = "2",
                                   "Ga" = "3",
@@ -39,22 +42,23 @@ nrs <- strong_muac_raw %>%
                                    "Others" = "10"
                                
                        ) %>% 
-                       ff_label("Disease"),
+                       
+                       ff_label("Disease categories"),
                
-               muac.category =
-                       if_else (muac < 11.5,
-                               "Severe Malnutrition",
-                               if_else (muac > 12.5, "Normal",
-                                        "Moderate malnutrition")),
-
-              muac.category = factor (muac.category) %>% 
-                      fct_relevel(c("Normal","Moderate malnutrition","Severe malnutrition")),
+               muac.category = case_when (muac < 11.5  ~ "Severe acute malnutrition",
+                                          muac > 12.5 ~ "Normal nutrition status",
+                                          "Moderate acute malnutrition")%>%
+                       ff_label("MUAC category")%>%
+                       fct_relevel ("Normal nutrition status",
+                                    "Moderate acute malnutrition",
+                                    "Severe acute malnutrition"),
+                      
         
                 
                 muac.crosstab = if_else (muac > 12.5, "Normal",
                                         "Malnourished") %>% 
                         fct_relevel ("Normal") %>% 
-                       ff_label ("MUAC category"),
+                       ff_label ("MUAC two levels"),
                
                strong.category = factor (strong_score) %>% 
                        fct_recode("Low risk" = "0",
@@ -82,26 +86,21 @@ nrs <- strong_muac_raw %>%
                                      "Acute malnutrition",
                                      "Normal") %>% 
                        fct_relevel("Normal") %>% 
-                       ff_label ("WHO"),
-               
-               wfh_cdc_cat = if_else(wfh_cdc < - 2,
-                                     "Acute malnutrition",
-                                     "Normal") %>% 
-                       fct_relevel("Normal") %>% 
-                       ff_label ("CDC"),
+                       ff_label ("WHO category"),
+              
               
                muac_z_cat = if_else(muacz_who < - 2,
                                     "Acute malnutrition",
                                     "Normal") %>% 
                        fct_relevel("Normal") %>% 
-                       ff_label ("MUACZ"),
+                       ff_label ("MUAC z-score category"),
                
               age.group = 
                       if_else(age < 24, "< 24 months",
                               "> 24 months"),
               
               age.group = factor (age.group) %>%
-                      ff_label("Age (months"))
+                      ff_label("Age categories"))
              
 
                           
