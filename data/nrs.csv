@@ -1,0 +1,97 @@
+id,age,sex,nationality,tribe,diagnosis,diagnosis_cat,los,weight,stature,muac,strong_score,wfh_who,muacz_who
+1,36,2,1,7,Anal fissure; Stool impaction; Hirchsprung disease,2,22,13,99.5,13.3,2,-1.69,-1.97
+2,48,1,1,1,Obstructed umbilical hernia,10,1,16.7,105.4,16,2,-0.19,-0.11
+3,36,1,1,1,Known SCD with abdoninal loss of control,5,1,13.5,95.7,16,2,-0.66,0.21
+4,7,2,1,3,Cleft palate; SAM secondary to inadequate intake,10,11,4.8,51,11,4,3.11,-2.86
+5,36,1,1,1,Metastatic retinoblastoma,6,16,10,91,11.3,3,-3.51,-4.17
+6,48,2,1,1,Foreign body in airway,1,1,14.9,98.5,17,0,0.07,0.51
+7,6,1,1,1,Sickle cell disease,5,4,8.1,70,14.5,3,-0.48,0.24
+8,48,1,1,1,Right Haemothrosis in child with haemophilia,5,8,16.5,112,15.7,0,-1.77,-0.34
+9,19,2,1,1,Refractive tachycardia; Mild hypotension,4,1,9.9,82,14,0,-0.68,-0.46
+10,24,2,1,1,Acute kidney injury secondary to IVH; Severe Anemia,9,16,11,79,14.7,0,1.02,-0.15
+11,56,2,1,1,UTI; Tonsilitis,3,5,17.8,105,18,2,0.63,0.84
+12,19,1,1,3,Bronchitis; Bronchopneumonia,1,5,11.3,83,15,2,0.28,0.09
+13,10,1,1,1,Scrotal swelling,10,2,8.7,73,13.5,0,-0.53,-0.99
+14,11,1,1,2,Anemia and Sepsis,9,6,9.6,77,14.2,1,-0.37,-0.37
+15,36,1,1,2,Sepsis; URTI,3,2,13.3,96,14.4,0,-0.91,-1.13
+16,48,2,1,1,Severe Acute Asthmatic Attack; Bronchopneumonia,1,1,17.4,109,16.5,1,-0.49,0.17
+17,23,1,1,1,Bilateral Hydronephrosis and hydroureters,8,30,13,86,13.5,0,1.23,-1.45
+18,23,2,1,1,Inguinoscrotal hernia,10,1,9,83,12.5,2,-2.05,-2.11
+19,60,1,1,1,Hemophilia,5,2,15.7,104.8,15.5,0,-0.8,-0.75
+20,36,1,1,1,Abdominal lymphoma,6,31,16.7,97.2,14.2,0,1.61,-1.31
+21,18,2,1,2,Malaria and severe anemia,9,15,9.9,90,14.2,1,-2.71,-0.24
+22,8,2,1,9,Sepsis and anemia,9,2,9.1,77,14.5,2,-0.5,0.42
+23,60,2,1,1,Otitis media and malaria,3,1,18.7,111.6,16.3,2,-0.3,-0.36
+24,12,2,1,9,Sickle cell disease,5,3,9,82.5,13.3,3,-1.92,-0.8
+25,20,1,1,1,Obstructed right inguinal hernia,10,1,10,84,14.2,0,-1.48,-0.66
+26,11,1,1,1,Acute Gastroenteritis,2,1,7.6,77,14.5,2,-3.31,-0.1
+27,36,1,2,NA,Febrile convulsion,7,4,15.5,99.5,16.5,0,0.22,0.59
+28,28,2,1,1,Gastroenteritis,2,1,10.2,87.5,13.5,2,-1.91,-1.45
+29,36,1,1,9,Acute watery diarrhoea,2,4,11.4,90,14.1,0,-1.56,-1.4
+30,12,2,1,1,Chronic Acute watery diarrhoea and severe dehydration,2,10,5.4,72.5,10.7,5,-5.23,-3.47
+31,12,1,1,1,"Malnutrition, Malaria",3,18,5.4,68.5,10.7,4,-4.93,-3.93
+32,12,1,1,1,"Malnutrition, Malaria",3,11,7.5,76,12.3,2,-3.23,-2.24
+33,18,2,1,1,Urinary tract infection,3,3,11,92.5,14.7,2,-2.02,0.19
+34,12,1,1,1,Severe Anemia,5,2,8.7,81.5,12.7,2,-2.63,-1.84
+35,18,2,1,3,Bronchopneumonia,1,3,9.3,81.5,13.9,1,-1.28,-0.5
+36,28,1,1,1,Bronchopneumonia,1,1,14.9,94.5,17,1,0.82,1.28
+37,18,1,1,1,Febrile seizure,7,1,9.2,89.5,15.7,0,-4.02,0.72
+38,13,1,2,NA,Febrile convulsion,7,3,12.4,86.3,14.8,0,0.59,0.11
+39,11,1,1,1,Complicated malaria,3,7,8.5,80,14.9,1,-2.58,0.25
+40,6,1,1,3,Surgical site infection,3,1,5.2,58,11.5,4,-0.49,-2.73
+41,36,1,1,1,Lower lobar pneumonia,1,1,11.7,89.9,13.7,1,-1.2,-1.77
+42,48,2,1,9,Severe Anemia,5,10,16.4,100.1,15,0,0.79,-0.91
+43,60,2,1,2,Severe Anemia,5,4,12.5,100,13.5,0,-2.25,-2.42
+44,60,2,1,1,Mesenteric panniculitis,3,3,17.5,114,12.4,1,-1.56,-3.35
+45,48,2,1,3,Maxillofacial tumor,6,12,17,103,13.5,1,0.57,-2.13
+46,24,1,1,1,Sickle cell disease and otitis media,9,4,9.9,82,13.5,3,-1.27,-1.5
+47,48,1,1,3,Malaria and pneumonia,9,3,11.4,88.5,13,0,-1.19,-2.7
+48,15,2,1,1,Chronic heart disease and failure to thrive,9,2,6.9,77,11.5,4,-3.73,-2.73
+49,7,2,1,9,Severe Anemia and urinary tract infection,9,1,7.8,70,13.7,2,-0.51,-0.18
+50,18,2,1,1,Seizure disorder,7,8,9.1,75,17,0,-0.06,1.94
+51,60,1,1,3,Strangulated hernia,10,10,18.8,117.4,15.2,1,-1.39,-0.98
+52,7,2,1,1,Vomiting,2,4,7.4,66,13.3,4,0.14,-0.53
+53,48,2,1,1,RVI and Pneumonia,9,9,14.4,100.3,15.6,3,-0.68,-0.46
+54,24,2,1,1,RVI; Bronchopneumonia; Anemia; Malnutrition,9,8,8.1,77.3,10.5,3,-2.08,-4.27
+55,27,2,1,1,Bronchopneumonia and mild distress,1,2,14.1,91.9,15.4,1,0.8,0.23
+56,36,1,1,3,Severe Malaria,3,13,11.8,92,15.5,1,-1.58,-0.19
+57,24,2,1,1,Malaria; Moderate Anemia; Aute watery diarrhoea,9,1,9.5,84.9,15,0,-2.09,0.1
+58,27,2,1,3,Febrile convulsion secondary to pharyngotonsilitis,7,6,12.7,89,14.5,0,0.27,-0.51
+59,34,2,1,1,Vomititng and some dehydration,2,2,9.4,92.8,12.4,4,-4.05,-2.77
+60,60,2,1,2,Severe malaria; Febrile convulsion; IVH,9,3,17,102,16.5,1,0.78,-0.23
+61,12,1,1,3,Bronchopneumonia with mild distress,1,2,9.8,68,15,0,2.43,0.31
+62,7,2,1,1,Acute watery diarrhoea; vomiting with some dehydration,2,1,8.1,71,13.2,0,-0.36,-0.62
+63,18,1,1,1,Complicated malaria; Hyperpyrexia,3,2,14.1,95,18,0,0.18,2.5
+64,48,1,1,9,Pharyngotonsilitis with mild distress,9,5,17.9,109,16.4,0,-0.17,0.19
+65,48,1,1,9,Lobar pneumonia,1,3,17.8,111,15.1,0,-0.67,-0.81
+66,17,1,1,1,Gastroenteritis,2,2,9,79,12.5,2,-1.62,-2.19
+67,24,1,1,9,Severe respiratory distress,1,6,10.4,82.1,13.2,2,-0.68,-1.79
+68,8,1,1,1,Bronchopneumonia,1,12,7.4,73,11,3,-2.57,-3.45
+69,48,1,1,9,Acute tonsilitis;Nephrotic syndrome;Anaemia secondary to IVH secondary to sepsis seconary to UTI,9,17,16.9,103.5,15.4,0,0.37,-0.57
+70,9,1,1,2,Febrile illness,3,3,7,73,12.5,2,-3.28,-1.93
+71,36,1,1,2,Sickle cell disease; RTI,9,1,13.6,101.3,17,0,-1.8,0.96
+72,11,2,1,2,Severe anemia,5,4,8.3,74,14,2,-0.86,-0.14
+73,30,1,1,3,Bronchopneumonia,1,1,14.1,90.5,15.5,0,0.99,0.01
+74,56,2,1,3,Seizure disorder with neurodevelopmental delay,7,2,15.1,106,15.5,2,-1.39,-0.79
+75,14,1,1,2,Mild moderate distress secondary to Bronchopneumonia,1,4,9.2,67,14.5,1,2.05,-0.18
+76,32,1,2,NA,Mild moderate distress,1,2,15.3,95.4,14.5,0,0.95,-0.92
+77,17,1,1,1,Hypertrophic adenoids,10,1,6.9,78,11.5,1,-4.62,-3.25
+78,14,1,1,2,Severe anemia,5,1,7.9,79,13.1,2,-3.28,-1.49
+79,20,1,1,1,Sickle cell disease,5,3,9,82,14.6,3,-2.31,-0.3
+80,48,1,1,3,Cerebral abscess; Anemia; Immunosuppression,9,15,18,101,13,0,1.66,-2.7
+81,11,1,1,9,Bronchopneumonia,1,2,8.5,81.5,13.3,0,-2.93,-1.22
+82,11,1,1,3,Evolving Bronchopneumonia,1,7,8.5,79,14.8,1,-2.35,0.17
+83,26,1,1,2,Bronchopneumonia; Acute watery diarrhoea,9,1,8.4,80.5,12.5,0,-3.01,-2.6
+84,17,1,1,3,Sepsis,3,4,10.8,88,14.8,0,-1.58,-0.01
+85,60,2,1,1,Urinary Tract Infection,3,1,16.6,112,15.4,1,-1.69,-0.97
+86,15,1,1,9,Bronchopneumonia,1,2,10.2,77,14,0,0.36,-0.67
+87,25,2,1,2,Acute watery diarrhoea,2,4,10.3,89,13.6,0,-2.16,-1.18
+88,24,1,1,1,Bronchopneumonia,1,2,9.2,81.5,14.1,0,-2.08,-0.93
+89,33,1,1,3,Acute Gastroenteritis; Severe dehydration,2,1,15.5,95.8,15.5,1,1.02,-0.1
+90,8,2,1,9,Bronchopneumonia,1,1,6.7,73,12.5,0,-3.13,-1.37
+91,60,2,1,1,Sickle cell disease with anemia,5,1,16.7,103.8,15.8,2,0.21,-0.69
+92,36,2,1,2,Persistent vomiting,2,1,11.5,94,12.2,5,-1.97,-3.03
+93,24,1,1,9,Acute Gastroenteritis; Upper respirstory tract infection,9,2,11.2,87.5,14.5,1,-1.17,-0.57
+94,48,1,1,3,Left otitis media,3,1,9.8,98,14.3,0,-5.07,-1.49
+95,60,1,1,3,Malaria; Moderate Anemia,9,2,13.4,105.8,12.7,2,-2.98,-3.2
+96,24,1,1,2,Complicated Anemia; Moderate Anemia; Mild dehydration,5,3,11.5,85.1,16.1,2,-0.21,0.78
