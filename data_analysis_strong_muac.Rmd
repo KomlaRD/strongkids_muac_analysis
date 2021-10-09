@@ -47,7 +47,7 @@ nrs <- import (here("data", "nrs.csv")) # Import dataset
 
 
 
-```{r data-wrangling}
+```{r data-wrangling, message=FALSE, warning=FALSE}
 knitr::read_chunk("data_processing.R") # Data transformations
 ```
 
@@ -459,6 +459,27 @@ inference (y = muac, x = sex, data = nrs, type ="ht",
 
 
 
+
+### STRONGkids category and sex
+
+
+
+```{r inference-strongkids}
+
+fisher.test(nrs$sex, nrs$strong.category) # Fisher's test for STRONGkids category
+```
+
+
+
+### MUAC categories and sex
+
+
+
+```{r}
+fisher.test(nrs$sex, nrs$muac.category) # Fisher's test for MUAC category
+```
+
+
 ### Malnutrition prevalence and confidence interval
 
 
@@ -472,4 +493,8 @@ inference (y = wfh_who_cat, data = nrs, type ="ci",
 )
 
 ```
+
+
+
+
 
