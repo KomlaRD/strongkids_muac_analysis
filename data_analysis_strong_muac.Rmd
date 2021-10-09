@@ -1,8 +1,14 @@
 ---
-title: ""
+title: "Validity OF STRONGkids AND MUAC in predicting acute malnutrition in hospitalised paediatric in-patients in Accra, Ghana"
 author: "Eric Komla Anku, Harriet Adu-Amoah, Joana Ainuson-Quampah"
 date: "6/8/2021"
-output: html_document
+output: 
+  html_document:
+    toc: yes
+    toc_float: yes
+  pdf_document:
+    toc: yes
+    latex_engine: xelatex
 ---
 
 
@@ -10,7 +16,7 @@ output: html_document
 * * *
 
 
-## Part 1: Data
+## Data and project setup
 
 
 The data was collected as a purposive sample of children admitted within 24 hours of admission at both Korle Bu and Princess Marie Louis Hospital.
@@ -25,30 +31,14 @@ knitr::opts_chunk$set(echo = FALSE) # mute codes
 
 
 ```{r package-setup}
-
-pacman::p_load (
-        tidyverse, # Data management
-        rio, # Importing dataset
-        here, # Working directory
-        janitor, # Clean data names
-        googlesheets4, # Read sheets from Google sheets
-        gtsummary, # Create summary tables
-        skimr, # Overview of dataset
-        GGally, # Correlation matrix
-        tinytex, # Creating pdf documents
-        finalfit, # Creating models
-        ggthemes, # Plot themes
-        ggstatsplot, # Inferential plots
-        knitr, # Chunk options
-        DescTools, # Confidence intervals
-        irr, # Inter-rater agreement
-        statsr #Inferential statistics
-        
-        
-)
-
+knitr::read_chunk("packages.R")
 ```
 
+
+
+```{r packages}
+
+```
 
 
 ```{r import-data}
@@ -58,110 +48,11 @@ nrs <- import (here("data", "nrs.csv")) # Import dataset
 
 
 ```{r data-wrangling}
+knitr::read_chunk("data_processing.R") # Data transformations
+```
 
-nrs <- nrs %>%
-        mutate( sex = factor(sex) %>%               
-                              
-                       fct_recode(           
-                               "Male" = "1",      
-                               "Female"   = "2") %>%
-                       ff_label("Sex"),  # Recode sex data into male and female 
-               
-             
-               nationality = 
-                       factor (nationality) %>%
-                       
-                       fct_recode("Ghanaian" = "1",
-                                  "Others"  = "2") %>%
-                       
-                       ff_label("Nationality"), # Recode Nationality into Ghanaian and others
 
-               
-               tribe = factor (tribe) %>%
-                       
-                       fct_recode("Akan" = "1",
-                                  "Ewe" = "2",
-                                  "Ga" = "3",
-                                  "Others" = "9") %>% 
-                       ff_label ("Tribe"), # Recode tribe 
-               
-               disease = factor (diagnosis_cat) %>% 
-                       fct_recode("Respiratory" = "1",
-                                  "Gastrointestinal" = "2",
-                                  "Infectious" = "3",
-                                  "Cardiac" = "4",
-                                   "Hematologic" = "5",
-                                   "Tumor" = "6",
-                                   "Neurologic" = "7",
-                                  "Renal" = "8",
-                                  "Multiple diseases" = "9",
-                                   "Others" = "10"
-                               
-                       ) %>% 
-                       
-                       ff_label("Disease categories"), # Recode diagnoses into categories
-               
-               
-               muac.category = case_when (muac < 11.5  ~ "Severe acute malnutrition",
-                                          muac > 12.5 ~ "Normal nutrition status",
-                                         TRUE ~ "Moderate acute malnutrition")%>%
-                       ff_label("MUAC category")%>%
-                       fct_relevel (c("Normal nutrition status",
-                                    "Moderate acute malnutrition",
-                                    "Severe acute malnutrition")), # Recode muac values into categories
-                      
-        
-                
-                muac.crosstab = if_else (muac > 12.5, "Normal",
-                                        "Malnourished") %>% 
-                        fct_relevel ("Normal") %>% 
-                       ff_label ("MUAC two levels"), # Recode muac into two categories for crosstab 
-               
-               
-               strong.category = factor (strong_score) %>% 
-                       fct_recode("Low risk" = "0",
-                                  "Medium risk" = "1",
-                                  "Medium risk" = "2",
-                                  "Medium risk" = "3",
-                                  "High risk" = "4",
-                                  "High risk" = "5") %>%
-                       
-                       fct_relevel(c("Low risk",
-                                     "Medium risk",
-                                     "High risk")), # Recode strongkids scores into risk categories
-               
-               
-               strong.crosstab = factor (strong_score) %>% 
-                       fct_recode("No risk" = "0",
-                                  "At risk" = "1",
-                                  "At risk" = "2",
-                                  "At risk" = "3",
-                                  "At risk" = "4",
-                                  "At risk" = "5") %>% 
-                       fct_relevel("No risk") %>% 
-                       ff_label ("STRONGkids"), # Recode strongkids categories into two levels for crosstab
-               
-                       
-               wfh_who_cat = if_else(wfh_who < - 2,
-                                     "Acute malnutrition",
-                                     "Normal") %>% 
-                       fct_relevel("Normal") %>% 
-                       ff_label ("WHO category"), # Recode wfh z-scores into acute malnutrition and none
-              
-              
-               muac_z_cat = if_else(muacz_who < - 2,
-                                    "Acute malnutrition",
-                                    "Normal") %>% 
-                       fct_relevel("Normal") %>% 
-                       ff_label ("MUAC z-score category"), # Recode muac z-scores into acute malnutrition and none
-               
-              age.group = 
-                      if_else(age < 24, "< 24 months",
-                              "> 24 months"), # Recode age into two groups
-              
-              
-              age.group = factor (age.group) %>%
-                      ff_label("Age categories"))   # Convert age category into a factor
+```{r transformations}
 
 ```
 
@@ -170,21 +61,20 @@ nrs <- nrs %>%
 
 
 
+* * *
+
+
+## Research question
+
+Is STRONGkids and MUAC useful in predicting acute malnutrition in hospitalised pediatric patients aged 6 months and 60 months compared to weight for height z score of <-2 SD?
+
+
 
 * * *
 
 
-## Part 2: Research question
 
-Is STRONGkids and MUAC useful in predicting acute malnutrition in hospitalised pediatric patients between 6 months and 60 months compared to weight for height z score of <-2 SD?
-
-
-
-* * *
-
-
-
-## Part 3: Exploratory data analysis
+## Exploratory data analysis
 
 
 
@@ -199,233 +89,65 @@ ggpairs(a)
 skim(nrs)
 ```
 
+
 ***
 
 
 
-## Visualisations
+## Summary tables
 
 
-```{r distributions-of-variables, eval=FALSE}
-# Distributions
-
-## Histograms for numerical values and barplots for categorical variables
-
-###Age
-ggplot (nrs, aes (age)) +
-  geom_freqpoly() 
-
-###Sex
-ggplot (nrs, aes (sex)) +
-  geom_bar() 
-
-###Disease category
-ggplot (nrs, aes (diagnosis_cat)) +
-  geom_bar(aes(fill=diagnosis_cat)) +
-  coord_polar() +
-  guides (fill="none")
-
-### Length of stay
-ggplot (nrs, aes (los)) +
-  geom_freqpoly() 
-```
+### Descriptive statistics (all)
 
 
 
-```{r age-visualisations, eval=FALSE}
-#What is the relationship between age and the other variables
-
-## Age and sex
-ggplot(nrs, aes(sex, age, fill = sex))+
-  geom_boxplot() + 
-  labs (title = "Relationship betwenn age and sex", x= "Sex of child", y= "Age of children")
-
-## Age and diagnosis category
-
-ggplot(nrs, aes(diagnosis_cat, age))+
-  geom_boxplot() + 
-  labs (title = "Relationship betwenn age and diagnosis category", x= "Disease category", y= "Age of children")
-
-## Age and length of stay stratified by sex
-
-ggplot(nrs, aes(age, los, colour = sex))+
-  geom_jitter() + 
-  labs (title = "Relationship betwenn age and lenght of stay", x= "Age of child", y= "Length of stay")
-
-## Age and weight stratified by sex
-
-
-ggplot(nrs, aes(age, weight, colour = sex))+
-  geom_point() + 
-  labs (title = "Relationship betwenn age and weight", x= "Age of child", y= "Weight")
-
-## Age and stature
-
-ggplot(nrs, aes(age, stature, colour = sex))+
-  geom_point() + 
-  labs (title = "Relationship betwenn age and stature", x= "Age of child", y= "Stature")
-
-## Age and muac
-
-ggplot(nrs, aes(age, muac, colour = sex))+
-  geom_point() + 
-  labs (title = "Relationship betwenn age and muac", x= "Age of child", y= "Mid upper arm circumference")
-
-## Age and two by two muac values
-
-ggplot(nrs, aes(muac.crosstab, age))+
-  geom_boxplot(outlier.color = "red") + 
-  labs (title = "Relationship betwenn age and two by two muac values", x= "MUAC categories", y= "Age of child")
-
-## Age and Strongkids category
-
-ggplot(nrs, aes(strong.crosstab, age))+
-  geom_boxplot(outlier.color = "red") + 
-  labs (title = "Relationship betwenn age and two by two STRONG values", x= "Strong categories", y= "Age of child")
-
-
-## Age and Weight for height WHO
-
-ggplot(nrs, aes(age, wfh_who, colour = sex))+
-  geom_point() + 
-  labs (title = "Relationship betwenn age and weight for height (WHO)", x= "Age of child", y= "Weight for height")
-
-## Age and MUAC z score
-
-ggplot(nrs, aes(age, muacz_who, colour = sex))+
-  geom_point() + 
-  labs (title = "Relationship betwenn age and muac z scores", x= "Age of child", y= "Mid upper arm circumference z scores")
-
-
-## Age and WHO wfh categories
-
-ggplot(nrs, aes(wfh_who_cat, age))+
-  geom_boxplot(outlier.color = "red") + 
-  labs (title = "Relationship betwenn age and two by WHO malnourished categories", x= "Acute malnutrition by WHO", y= "Age of child")
-
-## Age and MUAC z score categories
-
-ggplot(nrs, aes(muac_z_cat, age))+
-  geom_boxplot(outlier.color = "red") + 
-  labs (title = "Relationship betwenn age and MUAC z score categories", x= "Acute malnutrition by MUAC", y= "Age of child")
-
-
-
-```
-
-
-
-
-```{r summary-table}
+```{r summary-table-all}
 #Summary statistics 
 
 
 nrs%>%
   select(-c(id, diagnosis, diagnosis_cat))%>%
-    tbl_summary()
+    tbl_summary(statistic = c(stature, 
+                            muac,
+                            wfh_who,
+                            muacz_who
+                            )
+                                  ~ "{mean} ({sd})")
 
 ```
 
 
 
+### Descriptive statistics by sex
 
 
 
 
-
-
-```{r eval=FALSE}
-nrs%>%filter(muac_z_cat=="Acute malnutrition")%>%
-  group_by(age.group)%>%
-  count()
+```{r summary-table-by-sex}
+nrs%>%
+  select(-c(id, diagnosis, diagnosis_cat))%>%
+    tbl_summary(by=sex,
+                statistic = c(stature, 
+                            muac,
+                            wfh_who,
+                            muacz_who
+                            )
+                                  ~ "{mean} ({sd})")
 ```
 
 
-
-
-Descriptive information appendix
-
-
-
-```{r eval=FALSE}
-nrs %>% group_by(sex)%>%
-  summarise(median_age = median (age),
-            IQR_age = IQR (age),
-            median_los = median (los),
-            IQR_los = IQR (los),
-            median_wt = median (weight),
-            IQR_wt = IQR (weight),
-            mean_ht = mean (stature),
-            sd_ht = sd (stature),
-            mean_muac = mean (muac),
-            sd_muac = sd (muac))
-
-nrs %>% group_by(sex,wfh_cdc_cat,
-                )%>%
-  summarise (n = n())
-
-
-nrs %>% group_by(sex,wfh_who_cat,
-                )%>%
-  summarise (n = n())
- 
-
-nrs %>% group_by(sex,muac_z_cat,
-                )%>%
-  summarise (n = n())
- 
- nrs %>% group_by(sex,muac_cat_r,
-                )%>%
-  summarise (n = n())
- 
- 
-  nrs %>% group_by(sex,strong_score_cat,
-                )%>%
-  summarise (n = n())                
-
-```
 
 
 * * *
 
 
-```{r}
-ggplot (nrs, aes (strong.category, fill = sex)) +
-  geom_bar (position = "dodge") + labs (title = "STRONGkids risk category by sex", x = "Risk category", y = "Frequency") + scale_fill_discrete(name= "Sex")
+## Figures 
+
+```{r figure-one}
 
 
-# plot strongkids
-ggbarstats(
-  data = nrs,
-  x = sex,
-  y = strong.crosstab,
-  type = "parametric",
-  title = "STRONGkids category stratified by sex",
-  xlab = "STRONGkids categories",
-  legend.title = "Sex",
-  package = "basetheme",
-  palette = "ink"
-)
+# Plot MUAC z-score and sex
 
-
-# plot muac
-
-ggbarstats(
-  data = nrs,
-  x = sex,
-  y = muac.crosstab,
-  type = "parametric",
-  title = "MUAC category stratified by sex",
-  xlab = "MUAC categories",
-  legend.title = "Sex",
-  package = "beyonce",
-  palette = "X1"
-)
-
-
-
-
-# Plot MUAC categories
 ggbarstats(
   data = nrs,
   x = sex,
@@ -438,8 +160,12 @@ ggbarstats(
   palette = "spalette"
 )
 
+```
 
-# Plot WHO
+
+```{r figure-two}
+# Plot WHO z-score and sex
+
 ggbarstats(
   data = nrs,
   x = sex,
@@ -456,33 +182,22 @@ ggbarstats(
 
 
 
-MUAC z score vrs WHO z score
-```{r}
-## MUAC z-score vrs WHO z-score
 
-ggscatterstats(
-  data = nrs,
-  x = muacz_who,
-  y= wfh_who,
-  type = "parametric",
-  title = "Acute malnutrition WHO stratified by sex",
-  xlab = "MUAC z-scores",
-  ylab = "WHO z-scores"
-)
-
-```
 
 
 * * *
 
-## Part 6: Conclusion
+## Diagnostic statistics
 
 
 
 STRONG WHO
 
 
-```{r strongWHO}
+The following is cross table for STRONG categories against nutrition status defined by WHO z-score
+
+
+```{r strong-who}
 table (nrs$strong.crosstab,nrs$wfh_who_cat) #STRONGKIDS WHO
 ```
 
@@ -492,7 +207,10 @@ table (nrs$strong.crosstab,nrs$wfh_who_cat) #STRONGKIDS WHO
 MUAC WHO
 
 
-```{r}
+The following is cross table for MUAC categories against nutrition status defined by WHO z-score
+
+
+```{r muac-who}
 table (nrs$muac.crosstab,nrs$wfh_who_cat) # MUAC WHO
 ```
 
@@ -506,7 +224,11 @@ table (nrs$muac.crosstab,nrs$wfh_who_cat) # MUAC WHO
 
 STRONG SN WHO
 
-```{r}
+Sensitivity of STRONGkids
+
+
+
+```{r sensitivity-strong}
 ## WHO-STRONGkids
 
 ## Sensitivity
@@ -519,8 +241,14 @@ BinomCI(20, 29, conf.level = 0.95, method =  "wald")
 STRONG SP WHO
 
 
-```{r}
+Specificity of STRONGkids
+
+
+
+```{r specificity-strong}
 ## Specificity
+
+
 BinomCI(29, 67, conf.level = 0.95, method =  "wald")
 ```
 
@@ -529,8 +257,11 @@ BinomCI(29, 67, conf.level = 0.95, method =  "wald")
 STRONG PPV WHO
 
 
+Positive predictive value of STRONGkids
 
-```{r}
+
+
+```{r ppv-strong}
 
 ## Positive predictive value
 
@@ -538,10 +269,14 @@ BinomCI(20, 58, conf.level = 0.95, method =   "wald")
 ```
 
 
+
+
 STRONG NPV WHO
 
+Negative predictive value of STRONGkids
 
-```{r}
+
+```{r npv-strong}
 ## Negative predictive value
 
 BinomCI(29, 38, conf.level = 0.95, method =   "wald")
@@ -551,10 +286,18 @@ BinomCI(29, 38, conf.level = 0.95, method =   "wald")
 
 
 
+***
+
+
+
 MUAC SN WHO
 
 
-```{r}
+Sensitivity of MUAC
+
+
+
+```{r sensitivity-muac}
 ## WHO-MUAC
 
 ## Sensitivity
@@ -567,7 +310,11 @@ BinomCI(13, 29, conf.level = 0.95, method =  "wald")
 MUAC SP WHO
 
 
-```{r}
+Specificity of MUAC
+
+
+```{r specificity-muac}
+
 ## Specificity
 BinomCI(62, 67, conf.level = 0.95, method =  "wald")
 ```
@@ -577,7 +324,12 @@ BinomCI(62, 67, conf.level = 0.95, method =  "wald")
 MUAC PPV WHO
 
 
-```{r}
+Positive predictive value of MUAC
+
+
+
+```{r ppv-muac}
+
 ## Positive predictive value
 
 BinomCI(13, 18, conf.level = 0.95, method =   "wald")
@@ -589,7 +341,11 @@ BinomCI(13, 18, conf.level = 0.95, method =   "wald")
 MUAC NPV WHO
 
 
-```{r who-muac}
+Negative predictive value of MUAC
+
+
+
+```{r npv-muac}
 
 ## Negative predictive value
 
@@ -601,7 +357,7 @@ BinomCI(62, 78, conf.level = 0.95, method =   "wald")
 ***
 
 
-*Inter-rater agreement using Cohen's Kappa*
+## Inter-rater agreement using Cohen's Kappa
 
 
 ```{r cohen-kappa}
@@ -617,11 +373,16 @@ kappa2(k[,13:14])
 ***
 
 
-*INFERENTIAL STATISTICS*
+## Inferential statistics
 
 
 
-```{r inference, cache=TRUE}
+
+### Weight and sex
+
+
+
+```{r inference-weight, cache=TRUE}
 ### Inference
 
 ## Median weight
@@ -631,7 +392,15 @@ inference (y = weight, x = sex, data = nrs, type ="ht",
            method = "simulation", 
            alternative = "twosided"
            )
+```
 
+
+
+### Age and sex
+
+
+
+```{r inference-age, cache=TRUE}
 ## Median age
 
 inference (y = age, x = sex, data = nrs, type ="ht",
@@ -639,7 +408,14 @@ inference (y = age, x = sex, data = nrs, type ="ht",
            method = "simulation", 
            alternative = "twosided"
 )
+```
 
+
+### Stature and sex
+
+
+
+```{r inference-height, cache=TRUE}
 ## Mean height
 
 inference (y = stature, x = sex, data = nrs, type ="ht",
@@ -648,7 +424,14 @@ inference (y = stature, x = sex, data = nrs, type ="ht",
            alternative = "twosided"
 )
 
+```
 
+
+### Length of stay and sex
+
+
+
+```{r inference-los}
 ## Median length of stay
 
 inference (y = los, x = sex, data = nrs, type ="ht",
@@ -656,7 +439,14 @@ inference (y = los, x = sex, data = nrs, type ="ht",
            method = "simulation", 
            alternative = "twosided"
 )
+```
 
+
+### MUAC and sex
+
+
+
+```{r inference-muac}
 ## Mean muac
 
 inference (y = muac, x = sex, data = nrs, type ="ht",
@@ -665,32 +455,15 @@ inference (y = muac, x = sex, data = nrs, type ="ht",
            alternative = "twosided"
 )
 
+```
 
 
 
-## muac_z score
-
-inference (y = muac_z_cat, x = sex, data = nrs, type ="ht",
-           statistic = "proportion",
-           method = "theoretical", 
-           alternative = "twosided",
-           success = "Acute malnutrition"
-)
-
-## WHO WFH
-
-
-inference (y = wfh_who_cat, x = sex, data = nrs, type ="ht",
-           statistic = "proportion",
-           method = "theoretical", 
-           alternative = "twosided",
-           success = "Acute malnutrition"
-)
+### Malnutrition prevalence and confidence interval
 
 
 
-
-
+```{r malnutrition-prevalence}
 inference (y = wfh_who_cat, data = nrs, type ="ci",
            statistic = "proportion",
            method = "theoretical", 
@@ -698,7 +471,5 @@ inference (y = wfh_who_cat, data = nrs, type ="ci",
            success = "Acute malnutrition"
 )
 
-
 ```
-
 
