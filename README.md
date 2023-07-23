@@ -2,7 +2,7 @@
 
 # About Project
 
-This study was conducted in Korle Bu Teaching Hospital and Princess Marie Children's Hospital in Accra, Ghana. The aim of the study was to evaluate the validity of STRONGkids and MUAC with reference to weight-for-height (WFH) z-scores for paediatric inpatients between the ages of 6 months and 60 months. To the best of our knowledge, this study is the first to evaluate STRONGkids in Ghana and compare it with MUAC. In this study, malnutrition specifically refers to undernutrition.
+This study was conducted in Korle Bu Teaching Hospital and Princess Marie Children's Hospital in Accra, Ghana. The aim of the study was to evaluate the validity of STRONGkids and MUAC with reference to weight-for-height (WFH) z-scores for paediatric inpatients between the ages of 6 months and 60 months. To the best of our knowledge, this study is the first to evaluate STRONGkids in Ghana and compare it with MUAC. In this study, malnutrition specifically refers to undernutrition. [Link to article](https://journals.ug.edu.gh/index.php/hsij/article/view/2219)
 
 # Project setup
 
