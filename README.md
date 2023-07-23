@@ -4,6 +4,18 @@
 
 This study was conducted in Korle Bu Teaching Hospital and Princess Marie Children's Hospital in Accra, Ghana. The aim of the study was to evaluate the validity of STRONGkids and MUAC with reference to weight-for-height (WFH) z-scores for paediatric inpatients between the ages of 6 months and 60 months. To the best of our knowledge, this study is the first to evaluate STRONGkids in Ghana and compare it with MUAC. In this study, malnutrition specifically refers to undernutrition. [Link to article](https://journals.ug.edu.gh/index.php/hsij/article/view/2219)
 
+# Abstract
+
+**Background**: Malnutrition is commonly reported among hospitalized paediatric patients. However, it is often not diagnosed leading to prolonged hospital stays and other medical complications.
+
+**Objective**: This study aimed at evaluating the validity of the Screening Tool for Risk of Nutritional Status and Growth (STRONGkids) and mid-upper arm circumference (MUAC) for assessing malnutrition in paediatric inpatients between the ages of 6 months and 5 years. The weight-for-height (WFH) z-score was used as a reference standard for the evaluation.
+
+**Methods**: A cross-sectional study design was used in this study. A total of 96 individuals were enrolled in the study from both the Princess Marie Louise Children’s Hospital and Korle Bu Teaching Hospital, located in Accra, Ghana. Data were collected on demographics, admission details, weight, height, MUAC, and length of hospital stay. The STRONGkids screening tool was used for nutrition risk screening. Data analysis was performed using R version 4.1.0. Descriptive statistics were used to report frequencies, averages, percentages, standard deviations, and interquartile ranges. Diagnostic values were computed for STRONGkids and MUAC using WFH z-scores. Cohen's kappa was utilized to measure inter-rater agreement, with statistical significance set at p < 0.05.
+
+**Results**: Males accounted for 59.3% (n = 57/96) of the study sample. The prevalence of malnutrition in this study was 30% [n = 27/96; 95% confidence interval (CI): 21-39%]. The sensitivity and specificity of STRONGkids were 70% (95% CI: 52-86%) and 43% (95% CI: 31-55%), respectively. The sensitivity and specificity of MUAC were 45% (95% CI: 27-63%) and 93% (95% CI: 86-99%), respectively. The inter-rater agreement, based on two blinded assessments, for STRONGkids, was 0.57 (p = 0.006).
+
+**Conclusion**: The study revealed that STRONGkids had a low overall degree of validity, while MUAC had a high validity for specificity but lower validity for other diagnostic values. As a result, it is not recommended to use STRONGkids or MUAC individually for screening pediatric malnutrition in this setting, but rather in conjunction.
+
 # Project setup
 
 R version 4.1.0 (2021-05-18)
